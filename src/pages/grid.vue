@@ -4,11 +4,17 @@
       <c-grid :data="records"
               :frozen-col-count="1">
         <c-grid-column field="id"
-                       width= "50">
+                       width= "50"
+                       :column-style="style1"
+                       :header-style="style2"
+                       @click-cell="onClickCell($event, 'id')"
+                       @contextmenu-cell="onCtxmenuCell($event, 'id')">
           ID
         </c-grid-column>
         <c-grid-radio-column field="selected"
-                             width="50">
+                             width="50"
+                             :header-style="style2">
+
           選択
         </c-grid-radio-column>
         <c-grid-button-column caption="削除"
@@ -66,13 +72,24 @@ export default {
     },
     mounted() {
         this.setRecord()
+        this.listen("click_cell", (...args) => alert('1'));
     },
     data () {
         return {
+            style1: {font: '9px sans-serif'},
+            style2: {font: '9px sans-serif'},
             records: []
         }
     },
     methods: {
+        onClickCell(event, colName) {
+          //クリックイベント
+          alert('Click at '+colName+': $event='+JSON.stringify(event))
+        },
+        onCtxmenuCell(event, colName) {
+          //右クリックイベント
+          alert('Ctxmenu at '+colName+': $event='+JSON.stringify(event))
+        },
         /**
          * 削除ボタン押下イベント
          *
